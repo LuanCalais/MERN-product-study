@@ -1,0 +1,22 @@
+{
+  "name": "mern-crash",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-server": "nodemon ./backend/server.js"
+  },
+  "keywords": [],
+  "author": "Luan S Calais",
+  "license": "ISC",
+  "description": "Simple application to learn the MERN stack",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "mongoose": "^8.13.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
