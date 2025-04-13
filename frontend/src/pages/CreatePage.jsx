@@ -7,16 +7,41 @@ import {
   useColorModeValue,
   Input,
   Button,
+  useToast,
 } from "@chakra-ui/react";
+
+import { useProductStore } from "../store/product";
+
 export default function CreatePage() {
-  const [newwProduct, setNewProduct] = useState({
+  const [newProduct, setNewProduct] = useState({
     name: "",
     price: "",
     image: "",
   });
 
-  const handleCreateProduct = () => {
-    alert(`Created product: ${newwProduct.name}`);
+  const { createProduct } = useProductStore();
+
+  const toast = useToast();
+
+  const handleCreateProduct = async () => {
+    const { success, message } = await createProduct(newProduct);
+    if (!success) {
+      toast({
+        title: "Sorry, a error occurred",
+        description: message,
+        status: "error",
+        duration: 6000,
+        isClosable: true,
+      });
+      return;
+    }
+    toast({
+      title: "Operation Success",
+      description: message,
+      status: "success",
+      duration: 6000,
+      isClosable: true,
+    });
   };
 
   return (
@@ -36,23 +61,24 @@ export default function CreatePage() {
           <VStack spacing={4}>
             <Input
               placeholder="Name"
-              value={newwProduct.name}
+              value={newProduct.name}
               onChange={(e) =>
-                setNewProduct({ ...newwProduct, name: e.target.value })
+                setNewProduct({ ...newProduct, name: e.target.value })
               }
             />
             <Input
               placeholder="Price"
-              value={newwProduct.price}
+              type="number"
+              value={newProduct.price}
               onChange={(e) =>
-                setNewProduct({ ...newwProduct, price: e.target.value })
+                setNewProduct({ ...newProduct, price: Number(e.target.value) })
               }
             />
             <Input
               placeholder="Image"
-              value={newwProduct.image}
+              value={newProduct.image}
               onChange={(e) =>
-                setNewProduct({ ...newwProduct, image: e.target.value })
+                setNewProduct({ ...newProduct, image: e.target.value })
               }
             />
             <Button w={"100%"} colorScheme="blue" onClick={handleCreateProduct}>

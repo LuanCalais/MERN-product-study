@@ -4,7 +4,7 @@ import {
   Text,
   HStack,
   Button,
-  useColorMode
+  useColorMode,
 } from "@chakra-ui/react";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
@@ -15,10 +15,7 @@ export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <Container
-      maxW={"1140px"}
-      px={4}
-    >
+    <Container maxW={"1140px"} px={4}>
       <Flex
         h={16}
         alignItems={"center"}
