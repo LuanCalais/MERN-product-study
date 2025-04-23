@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 
 import { useProductStore } from "../store/product";
+import { useNavigate } from "react-router-dom";
 
 export default function CreatePage() {
   const [newProduct, setNewProduct] = useState({
@@ -23,8 +24,11 @@ export default function CreatePage() {
 
   const toast = useToast();
 
+  const navigate = useNavigate();
+
   const handleCreateProduct = async () => {
     const { success, message } = await createProduct(newProduct);
+    
     if (!success) {
       toast({
         title: "Sorry, a error occurred",
@@ -35,6 +39,9 @@ export default function CreatePage() {
       });
       return;
     }
+    
+    navigate("/");
+
     toast({
       title: "Operation Success",
       description: message,
@@ -42,6 +49,7 @@ export default function CreatePage() {
       duration: 6000,
       isClosable: true,
     });
+
   };
 
   return (

@@ -34,7 +34,7 @@ const ProductCard = ({ product }) => {
       toast({
         title: "Success",
         description: message,
-        status: "error",
+        status: "success",
         duration: 3000,
         isClosable: true,
       });
