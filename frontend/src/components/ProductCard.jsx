@@ -27,6 +27,7 @@ const ProductCard = ({ product }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [updatedProduct, setUpdatedProduct] = useState(product);
+  const [isLoading, setIsLoading] = useState(false);
 
   const textColor = useColorModeValue("gray.600", "gray.200");
   const bgColor = useColorModeValue("white", "gray.800");
@@ -36,9 +37,13 @@ const ProductCard = ({ product }) => {
   const toast = useToast();
 
   const handleDeleteProduct = async (id) => {
+    setIsLoading(true);
+
     const { success, message } = await deleteProduct(id);
 
     if (!success) {
+      setIsLoading(false);
+
       toast({
         title: "Error",
         description: message,
@@ -47,6 +52,7 @@ const ProductCard = ({ product }) => {
         isClosable: true,
       });
     } else {
+      setIsLoading(false);
       toast({
         title: "Success",
         description: message,
@@ -58,11 +64,15 @@ const ProductCard = ({ product }) => {
   };
 
   const handleUpdateProduct = async () => {
+    setIsLoading(true);
+
     const { success, message } = await updateProduct(
       updatedProduct._id,
       updatedProduct
     );
     if (!success) {
+      setIsLoading(false);
+
       toast({
         title: "Error",
         description: message,
@@ -72,10 +82,14 @@ const ProductCard = ({ product }) => {
       });
     }
 
-    onClose();
+    setIsLoading(false);
+
+    setTimeout(() => {
+      onClose();
+    }, 1000);
     toast({
       title: "Success",
-      description: message,
+      description: "Product updated",
       status: "success",
       duration: 3000,
       isClosable: true,
@@ -158,10 +172,14 @@ const ProductCard = ({ product }) => {
             </VStack>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button colorScheme="blue" variant="ghost" mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button onClick={handleUpdateProduct} variant="ghost">
+            <Button
+              isLoading={isLoading}
+              onClick={handleUpdateProduct}
+              colorScheme="blue"
+            >
               Update
             </Button>
           </ModalFooter>

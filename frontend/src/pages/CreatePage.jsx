@@ -20,6 +20,8 @@ export default function CreatePage() {
     image: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { createProduct } = useProductStore();
 
   const toast = useToast();
@@ -27,9 +29,11 @@ export default function CreatePage() {
   const navigate = useNavigate();
 
   const handleCreateProduct = async () => {
+    setIsLoading(true);
     const { success, message } = await createProduct(newProduct);
-    
+
     if (!success) {
+      setIsLoading(false);
       toast({
         title: "Sorry, a error occurred",
         description: message,
@@ -37,10 +41,12 @@ export default function CreatePage() {
         duration: 6000,
         isClosable: true,
       });
-      return;
     }
-    
-    navigate("/");
+
+    setIsLoading(false);
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
 
     toast({
       title: "Operation Success",
@@ -49,7 +55,6 @@ export default function CreatePage() {
       duration: 6000,
       isClosable: true,
     });
-
   };
 
   return (
@@ -89,7 +94,12 @@ export default function CreatePage() {
                 setNewProduct({ ...newProduct, image: e.target.value })
               }
             />
-            <Button w={"100%"} colorScheme="blue" onClick={handleCreateProduct}>
+            <Button
+              w={"100%"}
+              isLoading={isLoading}
+              colorScheme="blue"
+              onClick={handleCreateProduct}
+            >
               Create
             </Button>
           </VStack>
